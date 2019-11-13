@@ -91,8 +91,7 @@ def search_item():
   data = []
   dept = query[0]
   nugget = query[1].lower()
-  cmd = "SELECT P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM departments D, professors P, teaches T, Courses_in C WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND D.nickname = :dept AND P.nugget = :nugget"
-  #cmd = "SELECT first_name FROM professors WHERE nugget = :nugget"
+  cmd = "SELECT Q.review AS p_review, R.review AS r_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM departments D, professors P, teaches T, Courses_in C, course_reviews_of R, professor_reviews_of Q WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND D.nickname = :dept AND P.nugget = :nugget"
   cursor = g.conn.execute(text(cmd), dept = dept, nugget = nugget)
   rows = cursor.fetchall()
   print(len(rows))
@@ -100,20 +99,32 @@ def search_item():
   for result in rows:
     print("yes")
     print(result['first_name'])
-    data.append({'last_name': result['last_name'], 'first_name': result['first_name'], 'course_name': result['course_name']})
-    #prof.append([result['last_name'], result['first_name'], result['course_name']])
+    data.append({'p_review': result['p_review'], 'r_review': result['r_review'], 'department': result['department'], 'last_name': result['last_name'], 'first_name': result['first_name'], 'course_name': result['course_name']})
 
   cursor.close()
   return jsonify(data=data)
 
+@app.route('/search_item_prof', methods=['GET', 'POST'])
+def search_item_prof():
+  query = request.get_json()
+  data = []
+  last_name = query[0]
+  first_name = query[1]
+  print(last_name)
+  print(first_name)
+  cmd = "SELECT Q.review AS p_review, R.review AS r_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM departments D, professors P, teaches T, Courses_in C, course_reviews_of R, professor_reviews_of Q WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND P.last_name = :last_name"
+  cursor = g.conn.execute(text(cmd), last_name = last_name)
+  rows = cursor.fetchall()
+  print(len(rows))
+  print(cursor)
+  for result in rows:
+    print("yes")
+    print(result['first_name'])
+    data.append({'p_review': result['p_review'], 'r_review': result['r_review'], 'department': result['department'], 'last_name': result['last_name'], 'first_name': result['first_name'], 'course_name': result['course_name']})
 
-  
-  
-  # for i in range(len(data)):
-  #   for key, value in data[i].items():
-  #     if key != 'Id' and query.lower() in value.lower():
-  #       #print(i)
-  #       result.append(data[i])
+  cursor.close()
+  return jsonify(data=data)
+
 
   
 
@@ -138,18 +149,6 @@ if __name__ == "__main__":
   @click.argument('HOST', default='0.0.0.0')
   @click.argument('PORT', default=8111, type=int)
   def run(debug, threaded, host, port):
-    """
-    This function handles command line parameters.
-    Run the server using:
-
-        python server.py
-
-    Show the help text using:
-
-        python server.py --help
-
-    """
-
     HOST, PORT = host, port
     print("running on %s:%d" % (HOST, PORT))
     app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)

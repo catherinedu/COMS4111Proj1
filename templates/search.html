@@ -58,6 +58,9 @@
 		    margin-top: 0.5em;
 		    font-size: 15px
 		}
+		.inline{
+			display: inline-block;
+		}
 
 
    	</style>
@@ -74,7 +77,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-2">
-				<div class="ui-widget">
+				<div class="ui-widget inline">
 					<!-- <input type="text" id="enter_search" placeholder="Search"> -->
 					<select id="enter_dept">
 					    <option value="" disabled selected>Select Department</option>
@@ -103,6 +106,32 @@
 			<ul class="experiences">
 			</ul>
 		</div>
+
+
+		<div class="row">
+			<div class="col-md-2">
+				<div class="ui-widget">
+					<select id="enter_prof">
+					    <option value="" disabled selected>Select Professor</option>
+					    <option value="Cannon">Cannon, Adams</option>
+					    <option value="Lee">Lee, Jae</option>
+					    <option value="Gravano">Gravano, Luis</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<button class="btn btn-primary" id="submit_search_prof">Go</button>
+			</div>
+		</div>
+		<br>
+
+		<div id="result-1">
+			<ul class="experiences_1">
+			</ul>
+		</div>
+
+		
 
 		<div id="display">
 		</div>
