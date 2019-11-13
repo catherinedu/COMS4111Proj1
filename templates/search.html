@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block js_add%} 
+	<script>
+        var data = {{prof|tojson}}
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'search.js') }}"></script> 
+
+    <style>
+	    /* Experiences */
+		ul.experiences {
+		    padding-left: 5px;
+		    margin-top: -1px;
+		}
+		ul.experiences li {
+		    padding-left: 20px;
+		    margin-bottom: 2.5em;
+		    list-style: none;
+		}
+		/*ul.experiences li.pink {
+		    background: url('../img/misc/list-bullet-pink.png') no-repeat;
+		}*/
+		.where {
+		    font-size: 1.2857em; /* 18/16 -> 18px */
+		    font-weight: 300;
+		    display: inline;
+		    margin-right: 0.5em;
+		}
+		.what {
+		    font-size: 0.75em; /* 12/16 -> 12px */
+		    font-weight: 700;
+		    text-transform: uppercase;
+		    color: #fff;
+		    background-color: #444444;
+		    display: inline-block;
+		    padding: 0 12px;
+		    margin: -5px 0.5em 0 0 !important;
+		    -webkit-border-radius: 3px;
+		    -moz-border-radius: 3px;
+		    border-radius: 3px;
+		}
+		.what.green {
+		    background-color: #c4df9b;
+		}
+		.what.blue {
+		    background-color: #6dcff6;
+		}
+		.what.pink {
+		    background-color: #808080;
+		}
+		.when {
+		    float: right;
+		    color: #b9b9b9;
+		    font-style: italic;
+		}
+		.description {
+		    display: block;
+		    margin-top: 0.5em;
+		    font-size: 15px
+		}
+
+
+   	</style>
+ 
+
+{% endblock %}
+
+
+
+{% block placeholder %}
+	<div class="container">
+		<div class="jumpbotron">
+			<h1> Search </h1>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<div class="ui-widget">
+					<!-- <input type="text" id="enter_search" placeholder="Search"> -->
+					<select id="enter_dept">
+					    <option value="" disabled selected>Select Department</option>
+					    <option value="comp sci">comp sci</option>
+					    <option value="econ">econ</option>
+					    <option value="math">math</option>
+					    <option value="stats">stats</option>
+					    <option value="core">core</option>
+					</select>
+					<select id="enter_nugget">
+					    <option value="" disabled selected>Select Nuggets</option>
+					    <option value="Gold">Gold</option>
+					    <option value="Silver">Silver</option>
+					    
+					</select>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<button class="btn btn-primary" id="submit_search">Go</button>
+			</div>
+		</div>
+		<br>
+
+		<div id="result">
+			<ul class="experiences">
+			</ul>
+		</div>
+
+		<div id="display">
+		</div>
+
+	</div>
+	
+ 
+{% endblock %}
