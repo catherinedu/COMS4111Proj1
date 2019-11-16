@@ -90,14 +90,17 @@ def search_item():
   query = request.get_json()
   data = []
   dept = query[0]
-  nugget = query[1].lower()
+  nugget = query[1]
+  print(dept)
   # cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM departments D, professors P, teaches T, Courses_in C, course_reviews_of R, professor_reviews_of Q WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND D.nickname = :dept AND P.nugget = :nugget"
-  if (dept == NULL) & (nugget != NULL):
-      cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE P.nugget = :nugget AND D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid"
-  elif (dept != NULL) & (nugget == NULL):
-      cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE D.nickname = :dept AND T.pid = P.pid AND T.cid = C.cid AND C.did = D.did"
-  elif (dept != NULL) & (nugget != NULL):
-      cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND D.nickname = :dept AND P.nugget = :nugget "
+  if (dept is None) and (nugget):
+    nugget = nugget.lower()
+    cmd = "SELECT Q.review AS p_review, R.review AS r_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE P.nugget = :nugget AND D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid"
+  elif (dept) and (nugget is None):
+    cmd = "SELECT Q.review AS p_review, R.review AS r_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE D.nickname = :dept AND T.pid = P.pid AND T.cid = C.cid AND C.did = D.did AND T.cid = R.cid AND P.pid = Q.pid ORDER BY P.nugget"
+  elif (dept) and (nugget):
+    nugget = nugget.lower()
+    cmd = "SELECT Q.review AS p_review, R.review AS r_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND D.nickname = :dept AND P.nugget = :nugget "
 
   cursor = g.conn.execute(text(cmd), dept = dept, nugget = nugget)
   rows = cursor.fetchall()
@@ -106,7 +109,7 @@ def search_item():
   for result in rows:
     print("yes")
     print(result['first_name'])
-    data.append({'p_review': result['p_review'], 'c_review': result['c_review'], 'department': result['department'], 'last_name': result['last_name'], 'first_name': result['first_name'], 'course_name': result['course_name']})
+    data.append({'p_review': result['p_review'], 'r_review': result['r_review'], 'department': result['department'], 'last_name': result['last_name'], 'first_name': result['first_name'], 'course_name': result['course_name']})
 
   cursor.close()
   return jsonify(data=data)
@@ -131,14 +134,6 @@ def search_item_prof():
 
   cursor.close()
   return jsonify(data=data)
-<<<<<<< HEAD
-
-
-
-=======
-  
->>>>>>> ea36fb9d2dd201d429978e5c85f68ace5f1baaf9
-
 
 # # Example of adding new data to the database
 # @app.route('/add', methods=['POST'])
