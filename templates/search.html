@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 
-{% block js_add%} 
+{% block js_add%}
 	<script>
         var data = {{prof|tojson}}
     </script>
-    <script type="text/javascript" src="{{ url_for('static', filename = 'search.js') }}"></script> 
+    <script type="text/javascript" src="{{ url_for('static', filename = 'search.js') }}"></script>
 
     <style>
 	    /* Experiences */
@@ -64,7 +64,7 @@
 
 
    	</style>
- 
+
 
 {% endblock %}
 
@@ -86,16 +86,23 @@
 					    <option value="math">math</option>
 					    <option value="stats">stats</option>
 					    <option value="core">core</option>
+							<option value="ealac">ealac</option>
+							<option value="anthropology">anthropology</option>
+							<option value="classics">classics</option>
+							<option value="film">film</option>
+							<option value="chem">chem</option>
+
+
 					</select>
 					<select id="enter_nugget">
 					    <option value="" disabled selected>Select Nuggets</option>
 					    <option value="Gold">Gold</option>
 					    <option value="Silver">Silver</option>
-					    
+
 					</select>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4">
 				<button class="btn btn-primary" id="submit_search">Go</button>
 			</div>
@@ -113,13 +120,31 @@
 				<div class="ui-widget">
 					<select id="enter_prof">
 					    <option value="" disabled selected>Select Professor</option>
-					    <option value="Cannon">Cannon, Adams</option>
+					    <option value="Cannon">Cannon, Adam</option>
 					    <option value="Lee">Lee, Jae</option>
 					    <option value="Gravano">Gravano, Luis</option>
+							<option value="Chung">Chung, Eunice</option>
+							<option value="Vagnerova">Vagnerova, Lucie</option>
+							<option value="Blaer">Blaer, Paul</option>
+							<option value="Schulzrinne">Schulzrinne, Henning</option>
+							<option value="Pratt">Pratt, Ryan</option>
+							<option value="Ahsan">Ahsan, Sonia</option>
+							<option value="Feng">Feng, Yang</option>
+							<option value="Madigan">Madigan, David</option>
+							<option value="Pluta">Pluta, Samuel</option>
+							<option value="Miller">Miller, Robert</option>
+							<option value="Monroy">Monroy, Liza</option>
+							<option value="Buhle">Buhle, Jason</option>
+							<option value="Campos">Campos, Luis</option>
+							<option value="Schulzrinne">Schulzrinne, Henning</option>
+							<option value="Servedio">Servedio, Rocco</option>
+							<option value="Verma">Verma, Nakul</option>
+							<option value="Rubenstein">Rubenstein, Daniel</option>
+
 					</select>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4">
 				<button class="btn btn-primary" id="submit_search_prof">Go</button>
 			</div>
@@ -131,12 +156,12 @@
 			</ul>
 		</div>
 
-		
+
 
 		<div id="display">
 		</div>
 
 	</div>
-	
- 
+
+
 {% endblock %}
