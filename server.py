@@ -20,7 +20,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 
 prof = [
   {
-    "last_name":'hi', 
+    "last_name":'hi',
     "first_name":'yo',
     "course_name": "hii"
   }
@@ -35,7 +35,7 @@ engine = create_engine(DATABASEURI)
 
 #
 # Example of running queries in your database
-# Note that this will probably not work if you already have a table named 'test' in your database, 
+# Note that this will probably not work if you already have a table named 'test' in your database,
 # containing meaningful data. This is only an example showing you how to run queries in your database using SQLAlchemy.
 #
 engine.execute("""CREATE TABLE IF NOT EXISTS test (
@@ -48,7 +48,7 @@ engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'
 @app.before_request
 def before_request():
   """
-  This function is run at the beginning of every web request 
+  This function is run at the beginning of every web request
   (every time you enter an address in the web browser).
   We use it to setup a database connection that can be used throughout the request.
 
@@ -82,7 +82,7 @@ def home(name=None):
 
 @app.route('/search')
 def search(name=None):
-  return render_template('search.html', prof=prof) 
+  return render_template('search.html', prof=prof)
 
 
 @app.route('/search_item', methods=['GET', 'POST'])
@@ -91,7 +91,14 @@ def search_item():
   data = []
   dept = query[0]
   nugget = query[1].lower()
-  cmd = "SELECT Q.review AS p_review, R.review AS r_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM departments D, professors P, teaches T, Courses_in C, course_reviews_of R, professor_reviews_of Q WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND D.nickname = :dept AND P.nugget = :nugget"
+  # cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM departments D, professors P, teaches T, Courses_in C, course_reviews_of R, professor_reviews_of Q WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND D.nickname = :dept AND P.nugget = :nugget"
+  if (dept == NULL) & (nugget != NULL):
+      cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE P.nugget = :nugget AND D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid"
+  elif (dept != NULL) & (nugget == NULL):
+      cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE D.nickname = :dept AND T.pid = P.pid AND T.cid = C.cid AND C.did = D.did"
+  elif (dept != NULL) & (nugget != NULL):
+      cmd = "SELECT Q.review AS p_review, R.review AS c_review, D.name AS department, P.last_name AS last_name, P.first_name AS first_name, C.name AS course_name FROM courses_in C, departments D, professors P, course_reviews_of R, professor_reviews_of Q, teaches T WHERE D.did = c.did AND P.pid = T.pid AND T.cid = C.cid AND T.cid = R.cid AND P.pid = Q.pid AND D.nickname = :dept AND P.nugget = :nugget "
+
   cursor = g.conn.execute(text(cmd), dept = dept, nugget = nugget)
   rows = cursor.fetchall()
   print(len(rows))
@@ -99,7 +106,7 @@ def search_item():
   for result in rows:
     print("yes")
     print(result['first_name'])
-    data.append({'p_review': result['p_review'], 'r_review': result['r_review'], 'department': result['department'], 'last_name': result['last_name'], 'first_name': result['first_name'], 'course_name': result['course_name']})
+    data.append({'p_review': result['p_review'], 'c_review': result['c_review'], 'department': result['department'], 'last_name': result['last_name'], 'first_name': result['first_name'], 'course_name': result['course_name']})
 
   cursor.close()
   return jsonify(data=data)
@@ -126,7 +133,7 @@ def search_item_prof():
   return jsonify(data=data)
 
 
-  
+
 
 
 
