@@ -124,19 +124,15 @@ def search_item_prof():
 
   cursor.close()
   return jsonify(data=data)
-
-
   
 
 
-
-
-# Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-  name = request.form['name']
-  g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
-  return redirect('/')
+# # Example of adding new data to the database
+# @app.route('/add', methods=['POST'])
+# def add():
+#   name = request.form['name']
+#   g.conn.execute('INSERT INTO test(name) VALUES (%s)', name)
+#   return redirect('/')
 
 
 
