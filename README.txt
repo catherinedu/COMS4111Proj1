@@ -3,7 +3,10 @@ COMS 4111 Introduction to Databases
 Project 1 Part 3 
 Rosemary Torola rlt2140
 Catherine Du yd2386
-**********************************************************
+***********************************************************
+PSQL account: yd2386 proj1part2
+http://35.237.119.141:8111/search
+
 
 Files Included:
 server.py
